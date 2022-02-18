@@ -11,6 +11,17 @@
 		var datefrom = document.getElementById('datefrom').value;
 		var dateto = document.getElementById('dateto').value;
 		var ip = document.getElementById('ip').value;
+         if (datefrom == '') {
+                swal('Information','Please Input Date From','info');
+                 $('#spinner').fadeOut(function(){
+                        
+                    });
+        }else if(dateto == ''){
+                  swal('Information','Please Input Date To','info');
+                 $('#spinner').fadeOut(function(){
+                        
+                    });
+        }else{
 		$.ajax({
  				url: 'process/processor.php',
                 type: 'POST',
@@ -31,6 +42,7 @@
                 }
 		});
 	}
+}
 
 function export_product(table_id, separator = ',') {
     // Select rows from table_id

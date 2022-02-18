@@ -3,25 +3,21 @@ include 'conn.php';
 $method = $_POST['method'];
 
 if ($method == 'fetch_packing') {
-		 $line_name = strtoupper($_POST['line_name']);
-		 $lot = $_POST['lot'];
-		 $ip = $_POST['ip'];
-		 $datefrom = $_POST['datefrom'];
-		 $dateto = $_POST['dateto'];
-		  $startd = new DateTime($datefrom);
+		 $packing_line_name = strtoupper($_POST['packing_line_name']);
+		 $packing_lot = trim($_POST['packing_lot']);
+		 $packing_ip = trim($_POST['packing_ip']);
+		 $packing_datefrom = $_POST['packing_datefrom'];
+		 $packing_dateto = $_POST['packing_dateto'];
+		  $startd = new DateTime($packing_datefrom);
 		 $start_new = date_format($startd, "d-M-y");
-	     $endd = new DateTime($dateto);
+	     $endd = new DateTime($packing_dateto);
 		 $end_new = date_format($endd, "d-M-y");
 		$c = 0;
 	    
 		 $try = "SELECT REGISTLINENAME,REGISTCAMPANYCODE,IPADDRESS,REGISTDEPARTMENTCODE,REGISTPROCESS,REGISTDEVICEID,OPERATORID,PARTSNAME,LOT,SERIAL,READNAME,READPACKINGBOXCARD,PACKINGBOXCARDPARTSNAME,PACKINGBOXCARDLOT,PACKINGBOXCARDSERIAL,PACKINGBOXCARDAMOUNT,PACKINGBOXCARDJUDGMENT,RESETSUPERVISORID,RESETSUPERVISORNAME,
 		 	TO_CHAR(REGISTDATETIME,'yyyy-MM-dd HH24:MI:SS') AS REGISTDATETIME
 		 FROM T_PACKINGSAV
-		 WHERE REGISTLINENAME LIKE '$line_name%' 
-		 AND LOT LIKE '$lot%' 
-		 AND IPADDRESS LIKE '$ip%'
-		 AND (REGISTDATETIME >='$start_new' AND REGISTDATETIME <= '$end_new')
-		
+		 WHERE (REGISTDATETIME >='$start_new' AND REGISTDATETIME <= '$end_new') AND REGISTLINENAME LIKE '$packing_line_name%'	AND LOT LIKE '$packing_lot%' AND IPADDRESS LIKE '$packing_ip%'
 		 ORDER BY REGISTLINENAME ASC";
 	
 		$stmt = oci_parse($conn, $try);
@@ -65,8 +61,8 @@ if ($method == 'fetch_packing') {
 
 if ($method == 'fetch_product') {
 		 $line_name = strtoupper($_POST['line_name']);
-		 $lot = $_POST['lot'];
-		 $ip = $_POST['ip'];
+		 $lot = trim($_POST['lot']);
+		 $ip = trim($_POST['ip']);
 		 $datefrom = $_POST['datefrom'];
 		 $dateto = $_POST['dateto'];
 		  $startd = new DateTime($datefrom);
@@ -225,8 +221,8 @@ INSPECTION10PERIOD,INSPECTION10OPERATORID,INSPECTION10IPADDRESS, TO_CHAR(INSPECT
 
 if ($method == 'fetch_repair') {
 		 $line_name = strtoupper($_POST['line_name']);
-		 $lot = $_POST['lot'];
-		 $ip = $_POST['ip'];
+		 $lot = trim($_POST['lot']);
+		 $ip = trim($_POST['ip']);
 		 $datefrom = $_POST['datefrom'];
 		 $dateto = $_POST['dateto'];
 		  $startd = new DateTime($datefrom);
@@ -252,10 +248,9 @@ CHECKINFECTIONSHIPPED,CHECKINFECTIONCOMPLETED,CHECKINFECTIONINSPECTION,CHECKINFE
 
 INSPECTION9PROCESS,INSPECTION9PERIOD,INSPECTION9OPERATORID,INSPECTION9IPADDRESS, TO_CHAR(INSPECTION9STARTDATETIME,'yyyy-MM-dd HH24:MI:SS') AS INSPECTION9STARTDATETIME, TO_CHAR(INSPECTION9FINISHDATETIME,'yyyy-MM-dd HH24:MI:SS') AS INSPECTION9FINISHDATETIME,INSPECTION9JUDGMENT,INSPECTION9READOP1NAME,INSPECTION9READOP1NAMEJ,INSPECTION9READOP2NAME,INSPECTION9READOP2NAMEJ,INSPECTION9READOP3NAME,INSPECTION9READOP3NAMEJ,INSPECTION9READOP4NAME,INSPECTION9READOP4NAMEJ,INSPECTION9SEALRUBBERDETECTJ,INSPECTION9F1JUDGMENT,INSPECTION9F2JUDGMENT,INSPECTION9F3JUDGMENT,INSPECTION9F4JUDGMENT,INSPECTION9F5JUDGMENT,INSPECTION9F6JUDGMENT,INSPECTION9PACKINGCHECKCODE,INSPECTION9PACKINGCHECKJ
 		 FROM T_REPAIRSAV
-		 WHERE REGISTLINENAME LIKE '$line_name%' 
-		 AND LOT LIKE '$lot%' 
-		 AND IPADDRESS LIKE '$ip%'
-		 AND (REGISTDATETIME >='$start_new' AND REGISTDATETIME <= '$end_new')";
+		 WHERE 
+		 (REGISTDATETIME >='$start_new' AND REGISTDATETIME <= '$end_new') AND REGISTLINENAME LIKE '$line_name%'	AND LOT LIKE '$lot%' AND IPADDRESS LIKE '$ip%'
+		 ";
 	
 		$stmt = oci_parse($conn, $try);
 		oci_execute($stmt);
